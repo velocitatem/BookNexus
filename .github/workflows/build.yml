@@ -11,6 +11,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install dependencies
+      run: sudo apt-get install -y libgtest-dev
+
     - name: Set up CMake
       uses: lukka/get-cmake@v3.30.5
       with:
