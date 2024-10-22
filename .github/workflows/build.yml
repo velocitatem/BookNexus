@@ -20,10 +20,10 @@ jobs:
         cmakeVersion: 3.29
 
     - name: Configure CMake
-      run: cmake -S . -B build
+      run: cmake
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build . --config Debug --target all
 
     # provide the binary as an artifact
     - name: Run tests
