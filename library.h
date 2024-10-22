@@ -16,6 +16,7 @@ using namespace std;
 void display_item(LibraryItem item);
 class Library {
 public:
+    Library();
     Library(string name);
     ~Library();
     void add_item(LibraryItem item);

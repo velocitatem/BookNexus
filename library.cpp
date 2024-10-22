@@ -8,28 +8,52 @@
 
 using namespace std;
 
+Library::Library() : name("") {}
+
 Library::Library(string name) : name(name) {
-    // TODO: read from file in binary
-    // if file does not exist, create it
-
-    fstream file;
-    file.open("library.bin", ios::in | ios::binary);
-    if (file.is_open()) {
-
-        file.close();
+    // deserialize from csv not obj
+    ifstream file("../data/library.txt");
+    if(!file.is_open()) {
+        cout << "Error opening file" << endl;
+        return;
     }
-    else {
-        file.open("library.bin", ios::out | ios::binary);
-
-        file.close();
+    string line;
+    while (getline(file, line)) {
+        string name, author;
+        int pages, remaining;
+        double price;
+        size_t pos = 0;
+        pos = line.find(",");
+        name = line.substr(0, pos);
+        line.erase(0, pos+1);
+        pos = line.find(",");
+        author = line.substr(0, pos);
+        line.erase(0, pos+1);
+        pos = line.find(",");
+        pages = stoi(line.substr(0, pos));
+        line.erase(0, pos+1);
+        pos = line.find(",");
+        price = stod(line.substr(0, pos));
+        line.erase(0, pos+1);
+        remaining = stoi(line);
+        LibraryItem item(name, author, pages, price);
+        item.set_remaining(remaining);
+        this->items[item.hash()] = item;
     }
-
 }
 
 Library::~Library() {
-    // TODO: write to file
+    // serialize with plain text, save as a csv
+    ofstream file("../data/library.txt");
+    if(!file.is_open()) {
+        cout << "Error opening file" << endl;
+        return;
+    }
+    for (auto const& [key, val] : this->items) {
+        LibraryItem item = val;
+        file << item.get_name() << "," << item.get_author() << "," << item.get_pages_count() << "," << item.get_price() << "," << item.get_remaining() << endl;
+    }
 }
-
 void Library::add_item(LibraryItem item) {
     if (items.count(item.hash())) { // check if we have it
         LibraryItem* try_find = this->get_item_by_hash(item.hash());
