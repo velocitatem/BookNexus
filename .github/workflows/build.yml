@@ -21,3 +21,10 @@ jobs:
 
     - name: Build
       run: cmake --build build
+    # provide the binary as an artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: BookNexus
+    - name: Run tests
+      run: ctest -C Debug -VV

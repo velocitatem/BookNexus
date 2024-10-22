@@ -18,14 +18,14 @@ class Library {
 public:
     Library(string name);
     ~Library();
-    void add_item(LibraryItem *item);
+    void add_item(LibraryItem item);
     void remove_item(LibraryItem *item);
     LibraryItem* search_item(string query);
     LibraryItem* get_item_by_hash(size_t hash);
     bool checkout(LibraryItem *item);
-private:
-    map<size_t, LibraryItem*> items;
     LibraryItem null_item;
+private:
+    map<size_t, LibraryItem> items;
     string name;
 
 };

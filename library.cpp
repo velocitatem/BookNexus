@@ -30,13 +30,13 @@ Library::~Library() {
     // TODO: write to file
 }
 
-void Library::add_item(LibraryItem *item) {
-    if (items.count(item->hash())) { // check if we have it
-        LibraryItem* try_find = this->get_item_by_hash(item->hash());
+void Library::add_item(LibraryItem item) {
+    if (items.count(item.hash())) { // check if we have it
+        LibraryItem* try_find = this->get_item_by_hash(item.hash());
         try_find->set_remaining(try_find->get_remaining()+1); // increment if we found it
     }
     else {
-        this->items[item->hash()] = item; // add new to library
+        this->items[item.hash()] = item; // add new to library
     }
 }
 void Library::remove_item(LibraryItem *item) {
@@ -47,8 +47,8 @@ LibraryItem* Library::get_item_by_hash(size_t hash) {
     // I thought for a smaller size library a hash-functino might be
     // most efficient for easy access and low chance of duplicates
     if (this->items.count(hash)) { // we see if its in the keys
-        map<size_t, LibraryItem*>::iterator res = items.find(hash); // we find the key-val pair
-        return res == items.end() ? &null_item : res->second; // return item or null pointer
+        map<size_t, LibraryItem>::iterator res = items.find(hash); // we find the key-val pair
+        return res == items.end() ? &null_item : &res->second; // return item or null pointer
     }
     return &null_item; // just null
 }
